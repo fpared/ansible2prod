@@ -6,14 +6,16 @@
     - serverd.lab.example.com
 
   tasks:
-    - name: Ver los facts
-      debug:
-        var: ansible_facts
-
-    - name: Install apache
+    - name: Install {{ servidor }}
       yum:
-        name: apache2
+        name: "{{ servidor }}"
         state: latest
+
+    - name: "{{ estado }} {{ servidor }}"
+      service:
+        name: "{{ servidor }}"
+        enabled: true
+        state: "{{ estado }}"
 
     - name: Enable and start apache
       service:
@@ -33,7 +35,8 @@
         state: started
         
   handlers:
-    - name: restart apache
+    - name: restart {{ servidor }}
       service:
-        name: apache2
+        name: "{{ servidor }}"
         state: restarted
+
